@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Responsive Post Display by Category
- * Plugin URI: https://example.com
+ * Plugin URI: https://cantercrow.com/
  * Description: A plugin to display posts by category in a responsive grid layout.
- * Version: 1.0
- * Author: Your Name
- * Author URI: https://example.com
+ * Version: 2.0
+ * Author: Julian Haines
+ * Author URI: https://cantercrow.com/
  * License: GPL2
  */
 
@@ -15,8 +15,10 @@ function rpd_enqueue_styles_scripts() {
 }
 add_action('wp_enqueue_scripts', 'rpd_enqueue_styles_scripts');
 
-// Register shortcode
 
+//////////////////////////////////////////
+// Register shortcode
+/////////////////////////////////////////
 function rpd_display_posts($atts) {
     // Attributes with default values
     $atts = shortcode_atts([
@@ -54,7 +56,9 @@ function rpd_display_posts($atts) {
             echo '</div>';
 
             // Title
-            echo '<h3 style="font-size: ' . esc_attr($atts['title_font_size']) . ';">' . get_the_title() . '</h3>';
+            // Title with a custom class
+	   echo '<h3 class="rpd-title" style="font-size: ' . esc_attr($atts['title_font_size']) . ';">' . get_the_title() . '</h3>';
+
             
             // Display excerpt with word limit
             $excerpt = wp_trim_words(get_the_excerpt(), intval($atts['excerpt_length']), '...');
@@ -76,3 +80,80 @@ function rpd_display_posts($atts) {
 }
 
 add_shortcode('responsive_posts', 'rpd_display_posts');
+
+/////////////////////////////////////////////////////////
+// Settings Page
+////////////////////////////////////////////////////////
+
+// Hook to add admin menu
+add_action('admin_menu', 'rpd_add_admin_menu');
+
+function rpd_add_admin_menu() {
+    add_menu_page(
+        'Responsive Posts Display', // Page title
+        'RPD Settings',             // Menu title
+        'manage_options',           // Capability
+        'rpd-settings',             // Menu slug
+        'rpd_settings_page',        // Callback function
+        'dashicons-admin-generic',  // Icon
+        20                          // Position
+    );
+}
+
+// Callback function for the settings page
+
+function rpd_settings_page() {
+
+    // Save settings when form is submitted
+    if (isset($_POST['rpd_save_settings'])) {
+        update_option('rpd_columns', sanitize_text_field($_POST['rpd_columns']));
+        update_option('rpd_image_width', sanitize_text_field($_POST['rpd_image_width']));
+        update_option('rpd_image_height', sanitize_text_field($_POST['rpd_image_height']));
+        update_option('rpd_posts_per_page', sanitize_text_field($_POST['rpd_posts_per_page']));
+        echo '<div class="updated"><p>Settings saved successfully.</p></div>';
+    }
+
+
+    // Get saved options
+    $columns = get_option('rpd_columns', 3);
+    $image_width = get_option('rpd_image_width', 300);
+    $image_height = get_option('rpd_image_height', 200);
+    $posts_per_page = get_option('rpd_posts_per_page', 6);
+    ?>
+
+    <div class="wrap">
+        <h1>Responsive Posts Display Settings</h1>
+        <form method="post">
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><label for="rpd_columns">Number of Columns</label></th>
+                    <td><input type="number" name="rpd_columns" id="rpd_columns" value="<?php echo esc_attr($columns); ?>" class="small-text"></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="rpd_image_width">Image Width</label></th>
+                    <td><input type="number" name="rpd_image_width" id="rpd_image_width" value="<?php echo esc_attr($image_width); ?>" class="small-text"> px</td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="rpd_image_height">Image Height</label></th>
+                    <td><input type="number" name="rpd_image_height" id="rpd_image_height" value="<?php echo esc_attr($image_height); ?>" class="small-text"> px</td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="rpd_posts_per_page">Posts Per Page</label></th>
+                    <td><input type="number" name="rpd_posts_per_page" id="rpd_posts_per_page" value="<?php echo esc_attr($posts_per_page); ?>" class="small-text"></td>
+                </tr>
+            </table>
+            <p class="submit">
+                <input type="submit" name="rpd_save_settings" id="submit" class="button button-primary" value="Save Settings">
+            </p>
+        </form>
+        
+        <h2>Plugin Information</h2>
+        <p><strong>Shortcode Usage:</strong></p>
+        <code>[responsive_posts category="news" columns="3" image_width="300" image_height="200" posts_per_page="6"]</code>
+        <p>Use this shortcode to display posts dynamically, you can override global settings by specifying attributes in the shortcode.</p>
+        <p></p>
+        <p>Written by Julian Haines <a href="https://cantercrow.com">https://cantercrow.com</a></p>
+    </div>
+    <?php
+}
+

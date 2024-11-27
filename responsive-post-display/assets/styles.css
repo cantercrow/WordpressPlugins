@@ -53,6 +53,31 @@
     text-decoration: none;
 }
 
+.rpd-title {
+    font-size: 18px; /* Default title font size */
+    font-weight: bold; /* Make the title bold */
+    color: #333; /* Default title color */
+    margin: 10px 0; /* Spacing above and below the title */
+    text-align: Center; /* Align text to the left */
+    line-height: 4.4; /* Line height for better readability */
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.rpd-title:hover {
+    color: #0073e6; /* Change color on hover */
+    text-decoration: none; /* Ensure no underline appears on hover */
+}
+
+@media (max-width: 768px) {
+    .rpd-title {
+        font-size: 16px; /* Adjust title size for mobile screens */
+    }
+}
+
+
+
+
+
 a {
     text-decoration: none;
 }
