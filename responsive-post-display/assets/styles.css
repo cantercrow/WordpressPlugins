@@ -1,0 +1,78 @@
+.rpd-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--columns, 3), 1fr);
+    gap: 16px;
+}
+
+.rpd-item {
+    text-align: center;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1px;
+    transition: transform 0.3s ease;
+    text-decoration: none; /* Ensures no underline on hover */
+    background-color: #e9e9e9;
+
+}
+
+.rpd-item:hover {
+    transform: scale(1.05);
+}
+
+.rpd-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.rpd-read-more {
+    display: inline-block;
+    background-color: #ffffff;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #0073e6;
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 0px solid #0073e6;
+    border-radius: 4px;
+    text-decoration: none; /* Ensures no underline on hover */
+}
+
+.rpd-read-more:hover {
+    background-color: #999999;
+    color: #fff;
+}
+
+.rpd-excerpt {
+    font-size: 14px; /* Adjust the text size */
+    line-height: 1.6; /* Set line spacing */
+    color: #333; /* Text color */
+    margin: 10px 0; /* Spacing around the excerpt */
+    text-align: left; /* Justify the text for cleaner alignment */
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+@media (max-width: 768px) {
+    .rpd-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .rpd-excerpt {
+        font-size: 13px; /* Smaller text size for mobile */
+        line-height: 1.5; /* Adjusted spacing for smaller screens */
+}
+
+@media (max-width: 480px) {
+    .rpd-grid {
+        grid-template-columns: 1fr;
+    }
+     .rpd-excerpt {
+        font-size: 13px; /* Smaller text size for mobile */
+        line-height: 1.5; /* Adjusted spacing for smaller screens */
+}
